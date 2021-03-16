@@ -6,7 +6,7 @@ output led1,led2;
 reg change1;
 reg change2;
 
-always@(negedge gpio1)
+always@(negedge gpio1) //
 begin
 change1<=~change1;
 end
@@ -18,11 +18,6 @@ change2<=~change2;
 end
 asign led2=change2;
 
-always@(negedge gpio3)
-begin
-change3<=~change3;
-end
-asign led3=change3;
 
 endmodule
 

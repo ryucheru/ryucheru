@@ -3,7 +3,7 @@ module comp(gpio1,gpio2,led1,led2); //moduleの定義
 input gpio1,gpio2;
 output led1,led2;
 
-reg change1;
+reg change1; //alwaysで定義するのでregで宣言
 reg change2;
 
 always@(negedge gpio1) 

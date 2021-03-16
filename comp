@@ -8,9 +8,9 @@ reg change2;
 
 always@(negedge gpio1) 
 begin
-change1<=~change1;
+change1<=~change1; //changeの反転
 end
-assign led1=change1;
+assign led1=change1; //LEDの発光及びLEDの出力ピンにchange1を入力する
 
 always@(negedge gpio2)
 begin

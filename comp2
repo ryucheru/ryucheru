@@ -1,5 +1,5 @@
 //Verilog-HDL, comparator評価、GPIOからの入力をLEDで判定する,ramに保存
-module comp(gpio1,gpio2,led1,led2,ram1,ram2); //moduleの定義
+module comp(gpio1,gpio2,led1,led2,ram1,ram2,clk,clke); //moduleの定義
 input gpio1,gpio2;
 output led1,led2,ram1,ram2;
 

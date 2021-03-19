@@ -1,0 +1,15 @@
+module led(clk,reset,led1);
+
+input clk,reset;
+output led1;
+
+reg [22:0] cnt;
+
+always@(posedge clk or negedge reset)
+if (reset==1'b0)
+cnt<=23'd0;
+else cnt<=cnt+23'd1;
+
+assign led1=cnt[22];
+
+endmodule

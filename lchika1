@@ -1,3 +1,5 @@
+//Lチカ、
+
 module led(clk,reset,led1);
 
 input clk,reset;

@@ -1,0 +1,17 @@
+module Verilog1(clk,led1);
+input key1;
+output led1;
+
+reg change1;
+
+
+always@ (posedge clk) 
+begin
+if 
+end
+change1 <= ~change1;
+end
+assign led1=change1;
+
+
+endmodule

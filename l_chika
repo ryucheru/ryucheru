@@ -1,14 +1,15 @@
-module led (out, clk);
+module led(clk,reset,led1);
 
-input clk;
-output out;
-reg[24:0]count;
+input clk,reset;
+output led1;
 
-assign out=count[24];
+reg [23:0] cnt;
 
-always @(posedge(clk))
-begin
-count=count+1;
-end
+always@(posedge clk or negedge reset)
+if (reset==1'b0)
+cnt<=24'd0;
+else cnt<=cnt+24'd1;
+
+assign led1=cnt[23];
 
 endmodule

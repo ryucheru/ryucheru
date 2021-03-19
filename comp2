@@ -1,7 +1,7 @@
-//Verilog-HDL, comparator評価、GPIOからの入力をLEDで判定する
-module comp(gpio1,gpio2,led1,led2); //moduleの定義
+//Verilog-HDL, comparator評価、GPIOからの入力をLEDで判定する,ramに保存
+module comp(gpio1,gpio2,led1,led2,ram1,ram2); //moduleの定義
 input gpio1,gpio2;
-output led1,led2;
+output led1,led2,ram1,ram2;
 
 reg change1; //alwaysで定義するのでregで宣言
 reg change2;
@@ -10,13 +10,16 @@ always@(negedge gpio1)
 begin
 change1<=~change1; //changeの反転
 end
-assign led1=change1; //LEDの発光及びLEDの出力ピンにchange1を入力する
+assign led1=change1;
+assign ram1=change1;
+//LEDの発光及びLEDの出力ピンにchange1を入力する
 
 always@(negedge gpio2)
 begin
 change2<=~change2;
 end
 assign led2=change2;
+assign ram2=change2;
 
 
 endmodule

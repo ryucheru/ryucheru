@@ -1,25 +1,27 @@
-module lut(i1,i2,out);
+module OR_(
+    CLK     , // in    : Input, System clock
+    RESET   , // in    : Input, System reset
+    CE      , // in    : Input, Clock enable
+    IN_A    , // in    : Input
+    IN_B    , // in    : Input
+    O         // out   : Output
+);
 
-input i1,i2;
-output out;
+// ----- input/ output -----
+    input           IN_A   ;
+    input           IN_B   ;
+    output          O      ;
 
+    reg             O      ;
 
-
-assign or=i1|i2; //OR回路
-
-
+   always @(posedge CLK)begin
+       if(RESET) begin
+           Q <= 1'b0;
+       end else begin
+           if(CE)begin
+               Q <= (IN_A | IN_B);
+           end
+      end
+   end
 
 endmodule
-
-
-
-module dif(q,d,clk); //Dffの設定
-input d,clk;
-output q;
-reg q1;
-initial q1=0;
-
-assign #10 q=q1; //#=ユニット時間(遅れ時間)
-always @(negedge ck) q1=d;
-endmodule
-

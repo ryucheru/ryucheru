@@ -14,6 +14,8 @@ assign led1=change1;
 assign ram1=change1;
 //LEDの発光及びLEDの出力ピンにchange1を入力する
 
+assign(
+
 always@(negedge gpio2)
 begin
 change2<=~change2;

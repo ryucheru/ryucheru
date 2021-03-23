@@ -8,7 +8,7 @@ reg write_value2=0'b1:
 reg write_pulse2=1'b1;
 
 
-always@(posedge clk) //clkのposedgeでgpio1を調べ前回の値と違うとき書き込み値を設定し書き込みパルスを出力する。
+always@(posedge clk) //clkのposedgeでgpio1を調べ前回の値と違うとき書き込み値を設定し書き込み、パルスを出力する。
 begin
 if (gpio1 != write_value1)
 begin
@@ -34,5 +34,10 @@ begin
 write_pulse2 <= 1'b'0;
 end
 end
+
+
+
+
+
 
 endmodule

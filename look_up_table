@@ -1,0 +1,25 @@
+module lut(i1,i2,out);
+
+input i1,i2;
+output out;
+
+
+
+assign or=i1|i2; //OR回路
+
+
+
+endmodule
+
+
+
+module dif(q,d,clk); //Dffの設定
+input d,clk;
+output q;
+reg q1;
+initial q1=0;
+
+assign #10 q=q1; //#=ユニット時間(遅れ時間)
+always @(negedge ck) q1=d;
+endmodule
+

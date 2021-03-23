@@ -1,4 +1,4 @@
-module OR_(
+module OR_DFF(
     CLK     , // in    : Input, System clock
     RESET   , // in    : Input, System reset
     CE      , // in    : Input, Clock enable

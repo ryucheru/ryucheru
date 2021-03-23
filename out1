@@ -1,0 +1,38 @@
+module out1 (clk,gpio1,out1,gpio2.out2);
+input clk,gpio1,gpio2;
+output out1,out2;
+
+reg write_value1=0'b1:
+reg write_pulse1=1'b1;
+reg write_value2=0'b1:
+reg write_pulse2=1'b1;
+
+
+always@(posedge clk) //clkのposedgeでgpio1を調べ前回の値と違うとき書き込み値を設定し書き込みパルスを出力する。
+begin
+if (gpio1 != write_value1)
+begin
+write_value1 <= gpio1;
+write_pulse1 <= 1'b1;
+end
+else
+begin
+write_pulse1 <= 1'b'0;
+end
+end
+
+
+always@(posedge clk)
+begin
+if (gpio2 != write_value2)
+begin
+write_value2 <= gpio2;
+write_pulse2 <= 1'b1;
+end
+else
+begin
+write_pulse2 <= 1'b'0;
+end
+end
+
+endmodule

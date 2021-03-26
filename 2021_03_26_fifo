@@ -1,0 +1,110 @@
+module Verilog1 (key1,key2,led1,led2,led3,out1,clk,rst,out2,din,dout,wen,ren,oe,ef,ff);
+
+input key1;
+input key2;
+input clk;
+input rst;
+
+output led1;
+output led2;
+output led3;
+output out1;
+output out2;
+
+reg change1;
+reg change2;
+reg change3;
+
+
+always@ (negedge key1) 
+begin
+change1 <= ~change1;
+end
+assign led1=change1;
+
+
+always@ (negedge key2) 
+begin
+change2 <= ~change2;
+end
+assign led2=change2;
+
+wire out1;
+assign out1=~change1 & change2;
+
+always@ (negedge out1) 
+begin
+change3 <= ~change3;
+end
+assign led3=change3;
+
+reg out2;
+
+always @(posedge clk or negedge rst)
+if(!rst) out2<=0;
+else out2<=out1;//out2を出力
+
+
+
+parameter data_width=2;
+parameter fifo_depth=1;
+`define d_width 2
+`define f_depth 1
+
+reg[data_width-1:0] SF_RAM [0:(1<<fifo_depth)-1];
+//(1<<fifo_depth)-1=1
+
+reg [0:(1<<fifo_depth)-1] wptr ;
+reg [0:(1<<fifo_depth)-1] rptr ;
+reg ff_ref, ef_reg;
+wire ef_tmp;
+
+
+//出力アサイン
+assign ff=ef_reg;
+assign ef=ef_reg;
+//出力アサイン終わり
+
+//fifo
+always @(posedge clk ) begin
+	if (wen==1'b1 & ff_reg==1'b0)
+	sf_ram[wptr]<=din;
+end
+
+
+//書き込みポンタ
+always @(posedge clk or posedge rst) begin
+	if (rst==1'b1)
+	wptr<=`f_depth'b0;
+	else
+	begin
+		if(wen==1'b1 & ff_reg==1'b0)
+		if(wptr==`f_depth'b11)
+		wptr<='f_depth'b0;
+		else wptr<=wptr+1'b1;
+	end
+end
+
+
+//読み出しポインタ
+always @(posedge clk or posedge rst) begin
+	if (rst==1'b1)
+	rptr<=`f_depth'b11;
+	else
+	begin
+		if(ren==1'b1 & ef_reg==1'b0)
+		if(rptr=`f_depth'b11)
+		rptr<=`f_depth'b0;
+		else rptr<=rptr+1'b1;
+	end
+end
+
+//full flag
+always @(posedge clk or posedge rst) begin
+	
+	
+end
+
+
+
+endmodule

@@ -101,10 +101,34 @@ end
 
 //full flag
 always @(posedge clk or posedge rst) begin
+	if(rst==1'b1)
+	ff_reg<=1'b0;
+	else
+	begin
+		if(wptr==rptr & wen ==1'b1 & ren ==1'b0) ff_reg<=1'b1;
+		else if (ff_reg == 1'b1 & ren ==1'b1) ff_reg<=1'b0;
+	end
 	
 	
 end
 
+//almost empty
+assign ef_tmp=((rptr == wptr-1'b1)|(rptr==`f_depth'd15 &wptr==`f_depth'd1)|(rptr==`f_depth'd14 &wptr == `f_depth'd0 ))? 1'b1 : 1'b0;
+
+
+//empty flag
+always @(posedge clk or posedge rst)
+ begin
+if(rst ==1'b1)
+ef_reg<=1'b1;
+else 
+begin
+	if (ef_tmp == 1'b1 & wen == 1'b0 & ren == 1'b1)
+	ef_reg <= 1'b1;
+	else if (ef_reg == 1'b1 & wen == 1'b1)
+	ef_reg <= 1'b0;
+end	
+end
 
 
 endmodule

@@ -41,7 +41,7 @@ assign led3=change3;
 reg out2;
 
 always @(posedge clk or negedge rst)
-if(!rst) out2<=0;
+if(!rst) out2<=0; //!はNOT
 else out2<=out1;//out2を出力
 
 

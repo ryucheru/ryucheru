@@ -1,0 +1,176 @@
+module Verilog1 (key1,key2,key3,key4,key5,key6,led1,led2,led3,led4,led5,led6,out1,out2,out3,out4,out5,out6,clk,rst,out2,din,dout,wen,ren,oe,ef,ff);
+
+input key1;
+input key2;
+input key3;
+input key4;
+input key5;
+input key6;
+
+input clk;
+input rst;
+input reset;
+
+output led1;
+output led2;
+output led3;
+output led4;
+output led5;
+output led6;
+
+output out1;
+output out2;
+output out3;
+output out4;
+output out5;
+output out6;
+
+reg change1;
+reg change2;
+reg change3;
+reg change4;
+reg change5;
+reg change6;
+
+
+//////////////////CLKの生成//////////////////////
+always@ (negedge key1) 
+begin
+change1 <= ~change1;
+end
+assign hex00=change1;
+
+
+reg [23:0] cnt;
+
+always@(posedge clk or negedge reset)
+if (reset==1'b0)
+cnt<=24'd0;
+else cnt<=cnt+24'd1;
+
+assign led1=cnt[23];
+assign gpio1=cnt[23];
+///////////////////CLKの生成終わり///////////////////////////
+
+
+//////////////////DE_CLKの生成//////////////////////未完成////
+always@ (negedge key2) 
+begin
+change2 <= ~change2;
+end
+assign hex10=change2;
+
+reg [23:0] cnt;
+
+always@(posedge clk or negedge reset)
+if (reset==1'b0)
+cnt<=24'd0;
+else cnt<=cnt+24'd1;
+
+assign led2=cnt[23];
+assign gpio2=cnt[23];
+///////////////////DE_CLKの生成終わり///////////////////////////
+
+
+
+//////////////////Samplingの生成//////////////////////
+always@ (negedge key3) 
+begin
+change3 <= ~change3;
+end
+assign hex20=change3;
+
+
+reg [23:0] cnt;
+
+always@(posedge clk or negedge reset)
+if (reset==1'b0)
+cnt<=96'd0;
+else cnt<=cnt+96'd1;
+
+assign led3=cnt[95];
+assign gpio3=cnt[95];
+///////////////////Samplingの生成終わり///////////////////////////
+
+//////////////////RSTの生成//////////////////////未完成
+always@ (negedge key3) 
+begin
+change3 <= ~change3;
+end
+assign hex30=change3;
+
+
+reg [191:0] cnt;
+
+always@(posedge clk or negedge reset)
+if (reset==1'b0)
+cnt<=192'd0;
+else cnt<=cnt+192'd1;
+
+assign led3=cnt[191];
+assign gpio3=cnt[191];
+///////////////////RSTの生成終わり///////////////////////////
+
+//////////////////foating_RSTの生成//////////////////////
+always@ (negedge key4) 
+begin
+change4 <= ~change4;
+end
+assign hex40=change4;
+
+
+reg [95:0] cnt;
+
+always@(posedge clk or negedge reset)
+if (reset==1'b0)
+cnt<=96'd0;
+else cnt<=cnt+96'd1;
+
+assign led3=cnt[95];
+assign gpio3=cnt[95];
+///////////////////foating_RSTの生成終わり///////////////////////////
+
+
+//////////////////FL_RSTの生成//////////////////////わからない
+always@ (negedge key5) 
+begin
+change5 <= ~change5;
+end
+assign hex50=change5;
+
+
+reg [95:0] cnt;
+
+always@(posedge clk or negedge reset)
+if (reset==1'b0)
+cnt<=96'd0;
+else cnt<=cnt+96'd1;
+
+assign led3=cnt[95];
+assign gpio3=cnt[95];
+///////////////////FL_RSTの生成終わり///////////////////////////
+
+
+
+
+reg out2;
+
+always @(posedge clk or negedge rst)
+if(!rst) out2<=0;
+else out2<=out1;//out2を出力
+
+
+wire out2=din; //out2とdinはイコールということを打ちたい、以下のFIFOでは入力dinでりようされているから
+
+
+
+
+reg [23:0] cnt;
+
+always@(posedge clk or negedge reset)
+if (reset==1'b0)
+cnt<=24'd0;
+else cnt<=cnt+24'd1;
+
+assign led1=cnt[23];
+

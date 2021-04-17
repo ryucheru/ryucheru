@@ -1,0 +1,92 @@
+//以下FIFO記述,FIFOからUSBメモリに出力したい
+
+module FIFI_SYNC (rst, clk, DIN, dout, wen, ren, oe, ef, ff);
+
+
+
+parameter data_width=8;
+parameter fifo_depth=4;
+`define d_width 8
+`define f_depth 4
+
+reg[data_width-1:0] sf_ram [0:(1<<fifo_depth)-1];　　//(1<<fifo_depth)-1=15
+
+reg [0:(1<<fifo_depth)-1] wptr ;
+reg [0:(1<<fifo_depth)-1] rptr ;
+reg ff_ref, ef_reg;
+wire ef_tmp;
+
+
+//出力アサイン
+assign dout = (oe=1'b1)? sf_ram[prtr]:`d_width'bz;
+
+assign ff=ef_reg;
+assign ef=ef_reg;
+//出力アサイン終わり
+
+//fifo
+always @(posedge clk ) begin
+	if (wen==1'b1 & ff_reg==1'b0) sf_ram[wptr]<=din;																																																																																																																																																																																																																																																																																					
+end
+
+
+//書き込みポンタ
+always @(posedge clk or posedge rst) begin
+	if (rst==1'b1)
+	wptr<=`f_depth'b0;
+	else
+	begin
+		if(wen==1'b1 & ff_reg==1'b0)
+		if(wptr==`f_depth'b11)
+		wptr<='f_depth'b0;
+		else wptr<=wptr+1'b1;
+	end
+end
+
+
+//読み出しポインタ
+always @(posedge clk or posedge rst) begin
+	if (rst==1'b1)
+	rptr<=`f_depth'b11;
+	else
+	begin
+		if(ren==1'b1 & ef_reg==1'b0)
+		if(rptr=`f_depth'b11)
+		rptr<=`f_depth'b0;
+		else rptr<=rptr+1'b1;
+	end
+end
+
+//full flag
+always @(posedge clk or posedge rst) begin
+	if(rst==1'b1)
+	ff_reg<=1'b0;
+	else
+	begin
+		if(wptr==rptr & wen ==1'b1 & ren ==1'b0) ff_reg<=1'b1;
+		else if (ff_reg == 1'b1 & ren ==1'b1) ff_reg<=1'b0;
+	end
+	
+	
+end
+
+//almost empty
+assign ef_tmp=((rptr == wptr-1'b1)|(rptr==`f_depth'd15 &wptr==`f_depth'd1)|(rptr==`f_depth'd14 &wptr == `f_depth'd0 ))? 1'b1 : 1'b0;
+
+
+//empty flag
+always @(posedge clk or posedge rst)
+ begin
+if(rst ==1'b1)
+ef_reg<=1'b1;
+else 
+begin
+	if (ef_tmp == 1'b1 & wen == 1'b0 & ren == 1'b1)
+	ef_reg <= 1'b1;
+	else if (ef_reg == 1'b1 & wen == 1'b1)
+	ef_reg <= 1'b0;
+end	
+end
+
+
+endmodule
